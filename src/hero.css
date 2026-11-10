@@ -1,0 +1,113 @@
+/* hero */
+.hero
+    {position:relative;
+    overflow:hidden;
+    min-height:640px;
+    display:grid;
+    align-items:end;
+    color:#fff;
+    padding:0}
+
+.hero::before
+    {content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background:linear-gradient(180deg,rgba(20,64,59,.2),rgba(20,64,59,.9))}
+
+.hero .wrap
+    {position:relative;
+    z-index:2;
+    width:100%;
+    padding-bottom:64px}
+
+.hero h1
+    {font-size:clamp(44px,8vw,92px);
+    font-weight:800;
+    max-width:760px;
+    margin-top:16px}
+
+.hero p
+    {max-width:480px;
+    font-size:18px;
+    margin:20px 0 28px;
+    color:#e6ecf5}
+
+.facts
+    {display:flex;
+    gap:36px;
+    flex-wrap:wrap;
+    margin-top:36px}
+
+.facts b
+    {display:block;
+    font-size:28px}
+
+.facts span
+    {font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#c9dcd5}
+
+.hero-bg
+    {position:absolute;
+    inset:0;
+    z-index:0;
+    background-size:cover;
+    opacity:0;
+    transition:opacity 1s ease}
+
+.hero-bg.active
+    {opacity:1}
+
+.hero-bg.active.pan-0
+    {animation:pan0 7s ease-out forwards}
+
+.hero-bg.active.pan-1
+    {animation:pan1 7s ease-out forwards}
+
+.hero-bg.active.pan-2
+    {animation:pan2 7s ease-out forwards}
+    
+@keyframes pan0{
+    from
+        {transform:scale(1)}
+    to
+        {transform:scale(1.12)}
+}
+@keyframes pan1{
+    from
+        {transform:scale(1.12) translateX(2%)}
+    to
+        {transform:scale(1.04) translateX(-2%)}
+}
+@keyframes pan2{
+    from
+        {transform:scale(1.1) translateY(2%)}
+    to
+        {transform:scale(1.02) translateY(-2%)}
+}
+@media(prefers-reduced-motion:reduce){
+    .hero-bg.active
+        {animation:none}
+}
+
+@media(max-width:600px){
+    .hero
+        {min-height:100vh;
+        min-height:100svh}
+    .hero .wrap
+        {padding:100px 18px 40px}
+    .hero h1
+        {font-size:clamp(42px,12vw,64px)}
+    .hero p
+        {font-size:16px;
+        margin:16px 0 22px}
+    .facts
+        {gap:20px 24px;
+        margin-top:28px}
+    .facts b
+        {font-size:24px}
+    .facts span
+        {font-size:10px}
+}
