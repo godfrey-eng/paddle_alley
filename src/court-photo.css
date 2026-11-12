@@ -1,0 +1,17 @@
+/* court picture (replaces the old inline background-image) */
+.court-photo {
+  position: relative; /* <--- Add this line */
+  overflow: hidden;
+}
+
+.court-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.court-photo .pill {
+  z-index: 1;
+}
