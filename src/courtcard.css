@@ -1,0 +1,147 @@
+/* court card */
+.head
+    {display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:32px;
+    flex-wrap:wrap;
+    margin-bottom:40px}
+
+.lead
+    {max-width:380px;
+    margin:0}
+    
+.court-card
+    {background:#fff;
+    border-radius:24px;
+    padding:16px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    box-shadow:0 20px 50px rgba(20,64,59,.1)}
+
+.court-photo
+    {position:relative;
+    border-radius:16px;
+    min-height:480px;
+    background-size:cover;
+    background-position:center}
+
+.pill
+    {position:absolute;
+    top:18px;
+    left:18px;
+    background:#fff;
+    border-radius:99px;
+    padding:8px 16px;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    gap:8px;
+    align-items:center}
+
+.pill i
+    {width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--lime)}
+
+.pill i.off
+    {background:#c9c4b4}
+
+.court-info
+    {padding:40px 32px 32px 0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center}
+
+.court-info h3
+    {font-size:38px;
+    font-weight:700;
+    margin-bottom:16px}
+
+.court-info>p.muted
+    {font-size:17px;
+    margin:0 0 28px}
+    
+.row
+    {border-top:1px solid var(--line);
+    padding:16px 0;
+    display:flex;
+    gap:16px;
+    align-items:center}
+
+.row small,.quick small
+    {display:block;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--mute)}
+
+.row b
+    {font-size:16px}
+
+.quick
+    {border-top:1px solid var(--line);
+    padding:16px 0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px}
+
+.chips
+    {display:flex;
+    flex-wrap:wrap;
+    gap:8px}
+
+.chips .ant-tag
+    {font-size:14px;
+    padding:6px 14px;
+    border-radius:99px;
+    border:1px solid #d6cfbd;
+    cursor:pointer;
+    margin:0}
+
+.chips .ant-tag-checkable-checked
+    {background:var(--lime);
+    border-color:var(--lime);
+    color:var(--navy)}
+
+.chips .ant-tag:not(.ant-tag-checkable-checked):hover
+    {border-color:var(--green);
+    color:var(--green)}
+@media(max-width:800px){
+    
+    .court-card
+        {grid-template-columns:1fr}
+    .court-info
+        {padding:24px 16px}
+    .court-photo
+        {min-height:300px}
+}
+
+@media(max-width:600px){
+    .court-card
+        {padding:10px;
+        gap:8px;
+        border-radius:20px}
+    .court-photo
+        {min-height:220px;
+        border-radius:14px}
+    .pill
+        {top:12px;
+        left:12px;
+        padding:7px 12px;
+        font-size:11px}
+    .court-info
+        {padding:20px 10px 12px}
+    .court-info h3
+        {font-size:clamp(28px,8vw,36px)}
+    .court-info>p.muted
+        {font-size:15px;
+        margin-bottom:18px}
+    .row
+        {gap:12px;
+        padding:14px 0}
+    .row b
+        {font-size:14px}
+}
