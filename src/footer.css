@@ -84,3 +84,15 @@ footer p
   .map-box{height:200px}
   .map-click span{font-size:13px;padding:8px 14px}
 }
+
+/* staff portal link */
+.staff-portal{margin-top:24px}
+.staff-link
+  {background:none;
+  border:0;
+  padding:0;
+  font:inherit;
+  font-size:13px;
+  color:inherit;
+  text-decoration:underline;
+  cursor:pointer}

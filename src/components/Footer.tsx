@@ -3,8 +3,11 @@ import { logo } from '../data/content';
 import { ADDRESS, CONTACT, FB_LINK } from '../data/location';
 import { FacebookIcon } from './icons';
 import MapCard from './MapCard';
+import { useAdStore } from '../store/useAdStore';
 
 export default function Footer() {
+  const openAdmin = useAdStore((state) => state.openAdmin);
+
   return (
     <footer id="location">
       <div className="wrap">
@@ -17,6 +20,11 @@ export default function Footer() {
             <FacebookIcon />
             Find us on Facebook
           </a>
+          <div className="staff-portal">
+            <button type="button" className="staff-link" onClick={openAdmin}>
+              Staff portal
+            </button>
+          </div>
         </div>
         <MapCard />
       </div>

@@ -22,6 +22,7 @@ export interface AdState {
   // Home / Carousel state
   heroIndex: number;
   bookingOpen: boolean;
+  adminOpen: boolean;
   
   // Booking Flow state
   tab: Tab;
@@ -41,6 +42,8 @@ export interface AdState {
   nextHero: (count: number) => void;
   openBooking: () => void;
   closeBooking: () => void;
+  openAdmin: () => void;
+  closeAdmin: () => void;
   setTab: (tab: Tab) => void;
   update: (patch: Partial<AdState>) => void;
   reset: () => void;
@@ -72,6 +75,7 @@ const normalizePhone = (phone: string) => phone.replace(/\D/g, '').replace(/^63/
 export const useAdStore = create<AdState>()((set, get) => ({
   heroIndex: 0,
   bookingOpen: false,
+  adminOpen: false,
   tab: 'reserve',
   step: 1,
   date: isoDate(0),
@@ -85,6 +89,8 @@ export const useAdStore = create<AdState>()((set, get) => ({
 
   openBooking: () => set({ bookingOpen: true }),
   closeBooking: () => set({ bookingOpen: false }),
+  openAdmin: () => set({ adminOpen: true }),
+  closeAdmin: () => set({ adminOpen: false }),
   setTab: (tab) => set({ tab, found: undefined }),
 
   update: (patch) => set((state) => ({ ...state, ...patch })),

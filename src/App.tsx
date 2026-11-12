@@ -2,7 +2,9 @@ import { ConfigProvider } from 'antd';
 import Dock from './components/Dock';
 import HomeView from './components/HomeView';
 import BookingView from './components/BookingView';
-import { useAdStore, selectBookingOpen } from './store/useAdStore';
+import AdminApp from './App.jsx';
+import adminTheme from './theme.js';
+import { useAdStore } from './store/useAdStore';
 
 const COLORS = {
   navy: '#102a43',
@@ -28,8 +30,16 @@ body { margin: 0; font-family: ${FONT}; color: ${COLORS.navy}; }
 `;
 
 export default function App() {
-  // Read whether the booking view is active from your Zustand store
-  const bookingOpen = useAdStore(selectBookingOpen);
+  const bookingOpen = useAdStore((state) => state.bookingOpen);
+  const adminOpen = useAdStore((state) => state.adminOpen);
+
+  if (adminOpen) {
+    return (
+      <ConfigProvider theme={adminTheme}>
+        <AdminApp />
+      </ConfigProvider>
+    );
+  }
 
   return (
     <ConfigProvider

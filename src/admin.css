@@ -1,0 +1,105 @@
+/* admin: login, bookings table, court */
+.admin-shell { min-height: 100vh; }
+.admin-eye {
+  display: block;
+  color: #6b6f1a;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.admin-eye-lime { color: #b9cc42; margin-top: 50px; }
+.admin-muted { color: #5d6b85; }
+.admin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* login */
+.admin-hero {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding: 70px clamp(40px, 8vw, 150px) 50px;
+  background: #1c355e;
+  display: flex;
+  flex-direction: column;
+}
+.admin-hero-img { width: 100%; border-radius: 12px; }
+.admin-hero-title {
+  margin: 20px 0 30px;
+  color: #fff;
+  font-size: clamp(44px, 5vw, 80px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+.admin-hero-text { color: #cfd8e6; font-size: 20px; line-height: 1.8; }
+.admin-hero-note { margin-top: auto; color: #8c9ab3; font-size: 16px; }
+.admin-circle {
+  position: absolute;
+  right: -200px;
+  bottom: -220px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: #ffffff0a;
+}
+.admin-form { height: 100%; padding: 40px 18%; }
+.admin-back {
+  align-self: flex-start;
+  margin-bottom: 60px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #5d6b85;
+  cursor: pointer;
+}
+.admin-form-title { font-size: 44px; font-weight: 700; letter-spacing: -1.5px; margin: 0; }
+.admin-form-text { color: #5d6b85; font-size: 16px; margin: 0 0 10px; }
+
+/* bookings table */
+.admin-card { border: none; border-radius: 28px; }
+.admin-card-title { font-weight: 400; font-size: 30px; margin: 10px 0 0; letter-spacing: -.5px; }
+.admin-search { width: 110px; }
+.admin-select { width: 96px; }
+.admin-table { margin-top: 44px; }
+.admin-th { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.admin-ref { font-weight: 700; color: #1c355e; }
+.admin-ok {
+  font-weight: 400;
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: none;
+  margin: 0;
+  background: #e8ecc4;
+  color: #6b7a1a;
+}
+.admin-foot { margin: 24px 0 0; color: #5d6b85; }
+.admin-page { width: 31px; height: 33px; font-size: 11px; }
+
+/* court */
+.admin-court .ant-card-body { padding: 52px; }
+.admin-court-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 580px;
+  border-radius: 20px;
+  object-fit: cover;
+  background: #111;
+}
+.admin-court-status {
+  display: block;
+  color: #1c355e;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+.admin-dot { color: #b9cc42; }
+.admin-court-title { font-weight: 400; font-size: 40px; margin: 14px 0 8px; letter-spacing: -1px; }
+.admin-court-text { color: #5d6b85; font-size: 15px; margin: 0 0 44px; }
+.admin-court-facts { margin-bottom: 34px; }
