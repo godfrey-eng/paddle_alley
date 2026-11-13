@@ -49,7 +49,7 @@ export const isPast = (d: Dayjs) => d.isBefore(dayjs(), 'day');
 export const isOccupied = (d: Dayjs): boolean => {
   const key = d.format(DATE_KEY);
   if (DEMO_FULL_DATES.has(key)) return true;
-  const taken = takenHours(key, useAdStore().bookings);
+  const taken = takenHours(key, useAdStore.getState().bookings);
   const passed = key === dayjs().format(DATE_KEY) ? dayjs().hour() : -1;
   return SLOTS.every((h) => taken.has(h) || h <= passed);
 };
