@@ -104,16 +104,17 @@ export default function App() {
   }
   return (
     <Layout style={s.shell}>
-      <Drawer
-        open={drawer}
-        placement="left"
-        size={310}
-        closable={false}
-        mask={!wide}
-        keyboard={false}
-        maskClosable={false}
-        styles={{ section: s.sider, body: s.siderBody }}
-      >
+     <Drawer
+      rootClassName="admin-sider"
+      open={drawer}
+      placement="left"
+      size={310}
+      closable={false}
+      mask={!wide}
+      keyboard={false}
+      maskClosable={false}
+      styles={{ section: s.sider, body: s.siderBody }}
+    >
         <div>
           <img
             src="/logo.png"

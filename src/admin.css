@@ -18,6 +18,11 @@
   font-size: 13px;
 }
 
+.admin-sider .ant-drawer-content,
+.admin-sider .ant-drawer-section {
+  background: #1c355e;
+}
+
 /* login */
 .admin-hero {
   position: relative;

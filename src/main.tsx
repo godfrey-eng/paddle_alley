@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ConfigProvider } from 'antd';
-import App from './App';
+import App from './App.tsx';
 import { antTheme } from './theme/brand';
 import './styles.css';
 
