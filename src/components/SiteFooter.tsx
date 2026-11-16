@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Typography } from 'antd';
 import { POLICY_NOTE, POLICY_POINTS, POLICY_TITLE } from '../utils/Policy';
 import { COLORS } from '../theme/theme';
+import { logo } from '../data/content';
 const SiteFooter: React.FC = () => {
   
   const [modal, modalContext] = Modal.useModal();
@@ -44,8 +45,8 @@ const SiteFooter: React.FC = () => {
         alignItems: 'center', 
         gap: 28, 
         flexWrap: 'wrap' }}>
-        <img src="/Paddle Alley.png" alt="Paddle Alley"
-         height={200} style={{ display: 'block', 
+        <img src={logo} alt="Paddle Alley"
+         width={100} style={{ display: 'block', 
          borderRadius: 12 }} />
         <div>
           <div style={{ fontSize: 22, 

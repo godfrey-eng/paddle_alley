@@ -7,6 +7,7 @@ import net from '../assets/court-net.jpg';
 import light from '../assets/court-light.jpg';
 import sunset from '../assets/court-sunset.jpg';
 import type { CourtDetail, Fact, FaqEntry, HeroSlide, Photo } from '../types';
+import { CLOSE_HOUR, HOURLY_RATE, OPEN_HOUR, clockLabel, hourShort, peso } from '../utils/pricing';
 
 export { logo, banner };
 
@@ -30,14 +31,14 @@ export const photos: Photo[] = [
 ];
 
 export const facts: Fact[] = [
-  { value: '₱200', label: 'per hour' },
-  { value: '6AM–11PM', label: 'open daily' },
+  { value: peso(HOURLY_RATE, false), label: 'per hour' },
+  { value: `${hourShort(OPEN_HOUR).replace(' ', '')}–${hourShort(CLOSE_HOUR).replace(' ', '')}`, label: 'open daily' },
   { value: '7 days', label: 'a week' },
 ];
 
 export const courtDetails: CourtDetail[] = [
-  { icon: 'clock', label: 'Operating hours', value: '6:00 AM – 11:00 PM' },
-  { icon: 'grid', label: 'Standard rate', value: '₱200 / hour' },
+  { icon: 'clock', label: 'Operating hours', value: `${clockLabel(OPEN_HOUR)} – ${clockLabel(CLOSE_HOUR)}` },
+  { icon: 'grid', label: 'Standard rate', value: `${peso(HOURLY_RATE, false)} / hour` },
 ];
 
 export const faqs: FaqEntry[] = [

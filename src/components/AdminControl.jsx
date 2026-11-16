@@ -1,28 +1,17 @@
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Flex, Input, Row, Select, Table, Tag, Typography } from 'antd'
+import { Button, Card, Col, Flex, Input, InputNumber, Row, Select, Table, Tag, Typography } from 'antd'
+import { useEffect, useMemo } from 'react'
 import { useStore } from '../store'
 import { useAdStore } from '../store/useAdStore'
+import { buildAdminRows, newestConfirmedFirst } from '../admin-bookings'
+import { COL, HEADS, PAGINATION } from '../admin-config'
+import { clockLabel } from '../utils/pricing'
 import '../admin.css'
 
-const COL = { ref: 0, total: 5, payment: 6, status: 7, id: 8, stamp: 9 }
-const HEADS = ['Reference', 'Customer', 'Contact', 'Date', 'Schedule', 'Total', 'Payment', 'Reservation']
 const LOGIN_FIELDS = [
   ['user', 'Username or email', Input, 'admin@paddlealley.ph'],
   ['pass', 'Password', Input.Password, 'Enter your password'],
 ]
-const COURT_FACTS = [
-  ['Standard rental rate', '₱100 per hour'],
-  ['Booking durations', '30 min, 1 hr, 2 hrs, 3 hrs'],
-  ['Operating hours', '6:00 AM – 10:00 PM'],
-  ['Maintenance', 'Sundays · 10:00–11:00 PM'],
-]
-const PAGINATION = {
-  pageSize: 4,
-  showSizeChanger: false,
-  hideOnSinglePage: true,
-  showTotal: (total, [from, to]) => `Showing ${from}–${to} of ${total}`,
-}
-
 export function Login() {
   const { put, login, error, ...form } = useStore()
   const closeAdmin = useAdStore((st) => st.closeAdmin)
@@ -34,7 +23,7 @@ export function Login() {
           <img className="admin-hero-img" src="/login-logo.png" alt="Paddle Alley" />
           <span className="admin-eye admin-eye-lime">Administration</span>
           <h1 className="admin-hero-title">Keep every game on track.</h1>
-          <p className="admin-hero-text">Manage reservations, availability, and court operations in one workspace.</p>
+          <p className="admin-hero-text">Manage reservations, availability, and court operations from one focused workspace.</p>
           <small className="admin-hero-note">Secure staff access ·</small>
           <div className="admin-circle" />
         </div>
@@ -74,7 +63,9 @@ function Cell({ index, value, row, history }) {
 }
 
 export function Bookings({ title, history }) {
-  const { rows, q, date, filter } = useStore()
+  const { q, date, filter, confirmed } = useStore()
+  const bookings = useAdStore((st) => st.bookings)
+  const rows = useMemo(() => buildAdminRows(bookings, confirmed), [bookings, confirmed])
   const dates = [...new Set(rows.map((r) => r[3]))]
 
   const columns = HEADS.map((head, index) => ({
@@ -83,7 +74,7 @@ export function Bookings({ title, history }) {
     render: (value, row) => <Cell index={index} value={value} row={row} history={history} />,
   }))
   const pool = rows.filter((r) => r[COL.status] === (history ? 'Confirmed' : 'Confirm'))
-  const list = (history ? [...pool].reverse() : pool).filter(
+  const list = (history ? newestConfirmedFirst(pool) : pool).filter(
     (r) => r.slice(0, 8).join(' ').toLowerCase().includes(q.toLowerCase()) && (date === 'All' || r[3] === date),
   )
 
@@ -113,8 +104,18 @@ export function Bookings({ title, history }) {
   )
 }
 
+const HOUR_OPTIONS = Array.from({ length: 23 }, (_, h) => ({ value: h, label: clockLabel(h) }))
+const CLOSE_OPTIONS = Array.from({ length: 24 }, (_, i) => ({ value: i + 1, label: clockLabel(i + 1) }))
+
 export function Court() {
-  const { open, saved, put } = useStore()
+  const { open, saved, courtSaving, courtError, courtDraft: draft, put, initCourtDraft, setCourtField, saveCourt } = useStore()
+
+  useEffect(() => {
+    initCourtDraft()
+  }, [initCourtDraft])
+
+  if (!draft) return null
+  const closeOptions = CLOSE_OPTIONS.filter((o) => o.value > draft.openHour)
 
   return (
     <Card className="admin-card admin-court">
@@ -127,20 +128,54 @@ export function Court() {
             <span className="admin-dot">●</span> {open ? 'Open & available' : 'Closed for now'}
           </span>
           <h2 className="admin-court-title">Paddle Alley Court 1</h2>
-          <p className="admin-court-text">Competition-grade pickleball court with bright lighting and a sideline area.</p>
+          <p className="admin-court-text">
+            Set the price and playing hours. Customers see the new values the next time they open the site.
+          </p>
           <Row gutter={[24, 20]} className="admin-court-facts">
-            {COURT_FACTS.map(([label, value]) => (
-              <Col span={12} key={label}>
-                <label className="admin-label">{label}<Input size="large" defaultValue={value} /></label>
-              </Col>
-            ))}
+            <Col span={24}>
+              <label className="admin-label">
+                Standard rate (₱ per hour)
+                <InputNumber
+                  size="large"
+                  min={1}
+                  precision={0}
+                  prefix="₱"
+                  style={{ width: '100%' }}
+                  value={draft.hourlyRate}
+                  onChange={(value) => setCourtField('hourlyRate', value)}
+                />
+              </label>
+            </Col>
+            <Col span={12}>
+              <label className="admin-label">
+                Opening time
+                <Select
+                  size="large"
+                  options={HOUR_OPTIONS}
+                  value={draft.openHour}
+                  onChange={(value) => setCourtField('openHour', value)}
+                />
+              </label>
+            </Col>
+            <Col span={12}>
+              <label className="admin-label">
+                Closing time
+                <Select
+                  size="large"
+                  options={closeOptions}
+                  value={draft.closeHour}
+                  onChange={(value) => setCourtField('closeHour', value)}
+                />
+              </label>
+            </Col>
           </Row>
+          {courtError && <Typography.Text type="danger">{courtError}</Typography.Text>}
           <Flex justify="flex-end" gap={14}>
             <Button size="large" onClick={() => put({ open: !open, saved: false })}>
               {open ? 'Schedule closure' : 'Reopen court'}
             </Button>
-            <Button size="large" type="primary" onClick={() => put({ saved: true })}>
-              {saved ? 'Saved' : 'Save availability'}
+            <Button size="large" type="primary" loading={courtSaving} onClick={saveCourt}>
+              {saved ? 'Saved' : 'Save changes'}
             </Button>
           </Flex>
         </Col>

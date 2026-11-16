@@ -1,7 +1,5 @@
 import type { SiteStatus } from '../types';
-
-const OPEN_HOUR = 6;
-const CLOSE_HOUR = 22;
+import { CLOSE_HOUR, OPEN_HOUR, hourShort } from './pricing';
 
 // Live "open now" status (Philippine time).
 export function getStatus(now: Date = new Date()): SiteStatus {
@@ -15,8 +13,8 @@ export function getStatus(now: Date = new Date()): SiteStatus {
     ) % 24;
 
   return hour >= OPEN_HOUR && hour < CLOSE_HOUR
-    ? { open: true, text: 'Open now · until 11 PM' }
-    : { open: false, text: 'Closed now · opens 6 AM' };
+    ? { open: true, text: `Open now · until ${hourShort(CLOSE_HOUR)}` }
+    : { open: false, text: `Closed now · opens ${hourShort(OPEN_HOUR)}` };
 }
 
 const pad = (n: number): string => String(n).padStart(2, '0');

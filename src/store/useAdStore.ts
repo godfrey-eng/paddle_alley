@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import dayjs from 'dayjs';
 import { isoDate } from '../utils/time';
 import { priceOf } from '../utils/pricing';
+import { fetchBookings, saveBooking } from '../utils/api';
 
 export type Tab = 'reserve' | 'find';
 export type Step = 1 | 2 | 3 | 4;
@@ -16,6 +17,8 @@ export interface Booking {
   hours: number;
   total: number;
   wallet?: string;
+  createdAt?: number; // set when saved
+  confirmedAt?: number; // set when staff confirm it
 }
 
 export interface AdState {
@@ -49,12 +52,16 @@ export interface AdState {
   reset: () => void;
   confirmBooking: (walletName: string) => void;
   findBooking: (reference: string, contact: string) => Booking | undefined;
+  syncBookings: () => Promise<void>;
 }
 
 const KEY = 'paddle-alley:bookings';
+const KEEP_MS = 14 * 24 * 60 * 60 * 1000; // bookings are cleared after two weeks
+const SYNC_MS = 10000;
+const isFresh = (b: Booking) => !b.createdAt || Date.now() - b.createdAt < KEEP_MS;
 const loadBookings = (): Booking[] => {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '[]');
+    return (JSON.parse(localStorage.getItem(KEY) ?? '[]') as Booking[]).filter(isFresh);
   } catch {
     return [];
   }
@@ -120,6 +127,7 @@ export const useAdStore = create<AdState>()((set, get) => ({
       hours,
       total: priceOf(hours),
       wallet: walletName,
+      createdAt: Date.now(),
     };
 
     const next = [...bookings, booking];
@@ -128,6 +136,23 @@ export const useAdStore = create<AdState>()((set, get) => ({
     } catch {}
 
     set({ bookings: next, current: booking, step: 4 });
+    void saveBooking(booking);
+  },
+
+  // Merges the server's bookings with this browser's. Does nothing if the server is off.
+  syncBookings: async () => {
+    try {
+      const remote = await fetchBookings();
+      const known = new Set(remote.map((b) => b.reference));
+      const unsent = get().bookings.filter((b) => !known.has(b.reference));
+      unsent.forEach((b) => void saveBooking(b));
+      const merged = [...remote, ...unsent];
+      if (JSON.stringify(merged) === JSON.stringify(get().bookings)) return;
+      localStorage.setItem(KEY, JSON.stringify(merged));
+      set({ bookings: merged });
+    } catch {
+      // server not running: keep using the local bookings
+    }
   },
 
   findBooking: (reference: string, contact: string): Booking | undefined => {
@@ -147,3 +172,6 @@ export const selectBookingOpen = (s: AdState) => s.bookingOpen;
 export const selectBookingCount = (s: AdState) => s.bookings.length;
 export const selectOpenBooking = (s: AdState) => s.openBooking;
 export const selectCloseBooking = (s: AdState) => s.closeBooking;
+
+useAdStore.getState().syncBookings();
+setInterval(() => useAdStore.getState().syncBookings(), SYNC_MS);

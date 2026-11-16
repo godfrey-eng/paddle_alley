@@ -8,9 +8,7 @@ import { useAdStore } from '../store/useAdStore';
 import type { Booking } from '../store/useAdStore';
 import { COLORS } from '../theme/theme';
 
-const DEMO_FULL_DATES = new Set<string>(
-  [2, 5, 9, 13, 20].map((n) => dayjs().add(n, 'day').format(DATE_KEY)),
-);
+
 
 /** Every hourly start time: from opening until one hour before closing. */
 export const SLOTS = Array.from({ length: CLOSE_HOUR - OPEN_HOUR }, (_, i) => OPEN_HOUR + i);
@@ -48,7 +46,6 @@ export const isPast = (d: Dayjs) => d.isBefore(dayjs(), 'day');
 
 export const isOccupied = (d: Dayjs): boolean => {
   const key = d.format(DATE_KEY);
-  if (DEMO_FULL_DATES.has(key)) return true;
   const taken = takenHours(key, useAdStore.getState().bookings);
   const passed = key === dayjs().format(DATE_KEY) ? dayjs().hour() : -1;
   return SLOTS.every((h) => taken.has(h) || h <= passed);

@@ -20,6 +20,9 @@ import {
 import { useStore } from './store'
 import { s } from './styles'
 import { Bookings, Court, Login } from './components/AdminControl'
+import { useMemo } from 'react'
+import { useAdStore } from './store/useAdStore'
+import { buildAdminRows } from './admin-bookings'
 
 const statsOf = (rows) => {
   const done = rows.filter((r) => r[7] === 'Confirmed').length
@@ -39,7 +42,9 @@ const nav = [
 const cap = (k) => k[0].toUpperCase() + k.slice(1)
 
 export default function App() {
-  const { page, rows, drawer, put, go, exportCsv } = useStore()
+   const { page, confirmed, drawer, put, go } = useStore()
+  const bookings = useAdStore((st) => st.bookings)
+  const rows = useMemo(() => buildAdminRows(bookings, confirmed), [bookings, confirmed])
   const wide = Grid.useBreakpoint().lg
   if (page === 'login') return <Login />
   const items = nav.map(([key, icon]) => ({
@@ -117,8 +122,7 @@ export default function App() {
     >
         <div>
           <img
-            src="/logo.png"
-            alt="Paddle Alley"
+            src="/logo.jpg" alt="Paddle Alley"
             style={s.logo}
           />
           <Menu
@@ -148,12 +152,7 @@ export default function App() {
         />
         <span style={s.eye}>Admin workspace</span>
         <h1 style={s.h1}>{page}</h1>
-        <Avatar
-          size={52}
-          style={s.avatar}
-        >
-          PA
-        </Avatar>
+       
         {views[page]}
       </Layout.Content>
     </Layout>
