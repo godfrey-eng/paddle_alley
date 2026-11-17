@@ -1,7 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../utils/supabase';
 import type { Booking } from '../store/useAdStore';
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const KEEP_MS = 14 * 24 * 60 * 60 * 1000;
 
 const fromDb = (r: any): Booking => ({

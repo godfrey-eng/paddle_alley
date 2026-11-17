@@ -3,6 +3,7 @@ import { nowIso } from './admin-bookings'
 import { confirmOnServer } from './utils/api'
 import { getSettings } from './utils/pricing'
 import { saveSettings } from './utils/settings'
+import { hasAdminSession, signInAdmin, signOutAdmin } from './utils/auth'
 
 // Staff confirmations: reference -> stamp. Saved in this browser.
 const CONFIRMED_KEY = 'paddle-alley:confirmed'
@@ -51,12 +52,20 @@ export const useStore = create((set, get) => ({
   },
   filter: (patch) => set({ ...patch, pg: 0 }),
   go: (page) => set({ ...reset, page }),
-  login: () => {
+  busy: false,
+  login: async () => {
     const { user, pass } = get()
-    set(
-      user && pass
-        ? { page: 'booking' }
-        : { error: 'Enter your username and password.' },
-    )
+    if (!user.trim() || !pass) return set({ error: 'Enter your email and password.' })
+    set({ busy: true, error: '' })
+    const problem = await signInAdmin(user.trim(), pass)
+    if (problem) return set({ busy: false, error: problem })
+    set({ busy: false, page: 'booking', pass: '', error: '' })
+  },
+  logout: async () => {
+    await signOutAdmin()
+    set({ ...reset, page: 'login', user: '', pass: '', error: '' })
+  },
+  checkSession: async () => {
+    if (await hasAdminSession()) set({ page: 'booking' })
   },
 }))

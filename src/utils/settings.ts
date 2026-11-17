@@ -1,8 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../utils/supabase';
 import { DEFAULT_SETTINGS, applySettings } from './pricing';
 import type { CourtSettings } from './pricing';
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const ROW_ID = 'court';
 
 // Returns a message for the first problem found, or null if the settings are fine.

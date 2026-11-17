@@ -20,7 +20,7 @@ import {
 import { useStore } from './store'
 import { s } from './styles'
 import { Bookings, Court, Login } from './components/AdminControl'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAdStore } from './store/useAdStore'
 import { buildAdminRows } from './admin-bookings'
 
@@ -42,9 +42,13 @@ const nav = [
 const cap = (k) => k[0].toUpperCase() + k.slice(1)
 
 export default function App() {
-   const { page, confirmed, drawer, put, go } = useStore()
+   const { page, confirmed, drawer, put, go, logout, checkSession } = useStore()
   const bookings = useAdStore((st) => st.bookings)
   const rows = useMemo(() => buildAdminRows(bookings, confirmed), [bookings, confirmed])
+  // A signed-in admin who reloads the page goes straight back to the workspace.
+  useEffect(() => {
+    checkSession()
+  }, [checkSession])
   const wide = Grid.useBreakpoint().lg
   if (page === 'login') return <Login />
   const items = nav.map(([key, icon]) => ({
@@ -136,7 +140,7 @@ export default function App() {
           theme="dark"
           selectable={false}
           style={s.logout}
-          onClick={() => go('login')}
+          onClick={logout}
           items={[{ key: 'out', icon: <LogoutOutlined />, label: 'Logout' }]}
         />
       </Drawer>
