@@ -1,0 +1,148 @@
+/* FULL-SCREEN LOADER */
+.pickleball-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  overflow: hidden;
+
+  background: #f7f5ed;
+
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity 0.7s ease,
+    visibility 0.7s ease;
+}
+
+/* LOADER FADE OUT */
+.pickleball-loader--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ========================================
+   ANIMATION CONTAINER
+======================================== */
+
+.pickleball-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: min(90vw, 440px);
+  margin: 0 auto;
+
+  gap: 0;
+}
+
+/* ========================================
+   BOUNCING BALL STAGE
+======================================== */
+
+.pickleball-ball-stage {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 84px;
+  height: 120px;
+
+  margin-bottom: -5px;
+}
+
+/* PICKLEBALL */
+.pickleball-ball-bounce {
+  position: absolute;
+  z-index: 2;
+
+  width: 64px;
+  height: 64px;
+
+  animation:
+    pickleball-bounce 0.85s ease-in-out infinite alternate;
+
+  filter: drop-shadow(
+    0 0 8px rgba(165, 213, 0, 0.3)
+  );
+
+  will-change: transform;
+}
+
+/* BALL SVG */
+.pickleball-ball {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+/* BALL SHADOW */
+.pickleball-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  width: 35px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: rgba(30, 56, 91, 0.2);
+
+  filter: blur(4px);
+
+  transform: translateX(-50%);
+
+  animation:
+    pickleball-shadow 0.85s ease-in-out infinite alternate;
+}
+
+/* ========================================
+   HORIZONTAL PADDLE
+======================================== */
+
+.pickleball-paddle {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  min-height: 78px;
+  padding: 12px 18px;
+  border: 3px solid #8caed0;
+  border-radius: 25px;
+  background: linear-gradient(
+    180deg,
+    #29496f 0%,
+    #1e385b 55%,
+    #172d4b 100%
+  );
+  box-shadow:
+    0 5px 15px rgba(30, 56, 91, 0.15),
+    inset 0 2px 3px rgba(255, 255, 255, 0.12);
+
+  animation: paddle-appear 0.6s ease-out both;
+}

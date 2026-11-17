@@ -1,0 +1,150 @@
+/* ========================================
+   LOADING TEXT
+======================================== */
+.pickleball-loading-text {
+  margin-top: 32px;
+  margin-bottom: 0;
+  color: #1e385b;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  line-height: 1.5;
+  text-align: center;
+}
+/* ANIMATED DOTS */
+.pickleball-dots {
+  display: inline-block;
+
+  width: 24px;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-align: left;
+
+  animation:
+    pickleball-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes pickleball-dots {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 24px;
+  }
+}
+/* ========================================
+   MAIN WEBSITE CONTENT
+======================================== */
+.pickleball-content {
+  width: 100%;
+  min-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.pickleball-content--ready {
+  opacity: 1;
+}
+
+/* ========================================
+   TABLET RESPONSIVENESS
+======================================== */
+
+@media (max-width: 768px) {
+  .pickleball-animation {
+    width: min(88vw, 400px);
+  }
+
+  .pickleball-paddle {
+    min-height: 70px;
+    padding: 11px 15px;
+    gap: 9px;
+
+    border-radius: 23px;
+  }
+
+  .paddle-title {
+    font-size: clamp(18px, 4.2vw, 25px);
+    letter-spacing: 1px;
+  }
+
+  .paddle-decoration {
+    font-size: 25px;
+  }
+
+  .pickleball-loading-text {
+    margin-top: 28px;
+    font-size: 16px;
+  }
+}
+/* ========================================
+   MOBILE RESPONSIVENESS
+======================================== */
+@media (max-width: 480px) {
+  .pickleball-animation {
+    width: 88vw;
+    max-width: 360px;
+  }
+  .pickleball-ball-stage {
+    width: 74px;
+    height: 108px;
+  }
+  .pickleball-ball-bounce {
+    width: 58px;
+    height: 58px;
+  }
+  .pickleball-paddle {
+    min-height: 62px;
+    padding: 10px 10px;
+    gap: 6px;
+    border-width: 2px;
+    border-radius: 20px;
+  }
+  .paddle-title {
+    font-size: clamp(15px, 4.5vw, 21px);
+    letter-spacing: 0.5px;
+  }
+  .paddle-decoration {
+    font-size: 20px;
+  }
+  .pickleball-loading-text {
+    margin-top: 24px;
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+}
+/* VERY SMALL MOBILE SCREENS */
+@media (max-width: 340px) {
+  .pickleball-animation {
+    width: 92vw;
+  }
+  .pickleball-paddle {
+    padding: 9px 7px;
+    gap: 4px;
+  }
+  .paddle-title {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  .paddle-decoration {
+    font-size: 17px;
+  }
+}
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .pickleball-ball-bounce,
+  .pickleball-shadow,
+  .pickleball-dots,
+  .pickleball-paddle {
+    animation: none;
+  }
+
+  .pickleball-loader,
+  .pickleball-content {
+    transition-duration: 0.01ms;
+  }
+}

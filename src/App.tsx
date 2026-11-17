@@ -5,6 +5,7 @@ import BookingView from './components/BookingView';
 import AdminApp from './App.jsx';
 import adminTheme from './theme.js';
 import { useAdStore } from './store/useAdStore';
+import PickleballLoader from './components/PickleballLoader';
 
 const COLORS = {
   navy: '#102a43',
@@ -29,7 +30,8 @@ body { margin: 0; font-family: ${FONT}; color: ${COLORS.navy}; }
 @media print { footer, .no-print { display: none !important; } body { background: #fff; } }
 `;
 
-export default function App() {
+// Your existing app: Home, Book and the Staff portal. Unchanged.
+function AppContent() {
   const bookingOpen = useAdStore((state) => state.bookingOpen);
   const adminOpen = useAdStore((state) => state.adminOpen);
 
@@ -78,5 +80,15 @@ export default function App() {
         <Dock />
       </div>
     </ConfigProvider>
+  );
+}
+
+// The pickleball intro covers the site when it first opens, then fades away.
+// It wraps everything once, so it does not replay when switching Home / Book / Staff.
+export default function App() {
+  return (
+    <PickleballLoader>
+      <AppContent />
+    </PickleballLoader>
   );
 }
